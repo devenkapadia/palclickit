@@ -1,0 +1,317 @@
+{
+  "_readme": [
+    "Single source of truth for all website text. Edit the values here (not the keys).",
+    "{placeholders} such as {brand}, {city}, {year}, {name}, {ref} are filled in automatically - keep them where you want the value to appear.",
+    "Sections 'settings', 'packages_data', 'faqs_data', 'eventCards_data' and 'gallerySamples_data' are only the FIRST-RUN defaults that get saved to the database.",
+    "After the first run, edit those from Admin -> Website Content (changing them here will not overwrite what is already in the database).",
+    "Everything else (nav, hero, experience, form labels, footer...) is read live from this file - just save and rebuild/refresh."
+  ],
+
+  "brand": {
+    "name": "PAL – Click it",
+    "logoWord": "PAL",
+    "logoTagline": "Click it",
+    "stripCaption": "PAL · Click it",
+    "homeAriaLabel": "{brand} home"
+  },
+
+  "meta": {
+    "title": "PAL – Click it | Photobooth for Weddings & Events in Vadodara",
+    "description": "Instant-print photobooth for weddings, sangeets, corporate events, college fests and parties in Vadodara, Gujarat."
+  },
+
+  "common": {
+    "loadError": "We couldn't load the site right now. Please refresh in a moment."
+  },
+
+  "nav": {
+    "primaryAriaLabel": "Primary",
+    "mobileAriaLabel": "Mobile",
+    "openMenuAriaLabel": "Open menu",
+    "closeMenuAriaLabel": "Close menu",
+    "items": [
+      { "label": "Home", "href": "#home" },
+      { "label": "Experience", "href": "#experience" },
+      { "label": "Packages", "href": "#packages" },
+      { "label": "Our work", "href": "#work" },
+      { "label": "Contact", "href": "#contact" }
+    ],
+    "bookButton": "Book PAL"
+  },
+
+  "hero": {
+    "badge": "Photobooth · {city}",
+    "titleBefore": "Your moments.",
+    "titleHighlight": "Your PAL.",
+    "titleAfter": "Your memories.",
+    "primaryCta": "Book PAL for your event",
+    "secondaryCta": "Explore the experience",
+    "perks": ["Unlimited prints", "On-site attendant", "Custom strips"],
+    "imageAlt": "Guests posing at a PAL photobooth",
+    "stickerText": "Say PAL! 📸"
+  },
+
+  "marquee": {
+    "words": ["Weddings", "Sangeet", "Mehendi", "Birthdays", "Corporate", "College Fests", "Navratri", "Parties", "Brand Activations"]
+  },
+
+  "experience": {
+    "eyebrow": "The PAL experience",
+    "titleBefore": "More than just pictures. It's a",
+    "titleHighlight": "PAL moment.",
+    "sub": "Four simple steps from big laughs to a keepsake in your hand.",
+    "steps": [
+      { "number": "01", "title": "Pose", "description": "Gather your people and strike a pose." },
+      { "number": "02", "title": "Click", "description": "Capture the moment with our photobooth." },
+      { "number": "03", "title": "Print", "description": "Get your photos instantly." },
+      { "number": "04", "title": "Take it home", "description": "Keep a physical memory of the event." }
+    ],
+    "featuresTitle": "Everything that comes with your PAL",
+    "features": [
+      "Instant photo printing",
+      "Unlimited prints (per package)",
+      "Custom photo strip layouts",
+      "Event-specific branding",
+      "Props for fun pictures",
+      "On-site booth attendant",
+      "Digital photo gallery"
+    ]
+  },
+
+  "events": {
+    "eyebrow": "Events we cover",
+    "title": "Every celebration deserves a PAL",
+    "cta": "Tell us about your event"
+  },
+
+  "social": {
+    "eyebrow": "Our work",
+    "title": "Real moments. Real fun.",
+    "sub": "Reels and posts from the events PAL has been part of.",
+    "embedTitle": "PAL photobooth on Instagram",
+    "followCta": "Follow us on Instagram"
+  },
+
+  "packages": {
+    "eyebrow": "Packages",
+    "title": "Pick your PAL",
+    "sub": "All packages are for a standard 4-hour event. Need more hours or something custom? Just ask — we'll make it work.",
+    "recommendedBadge": "★ Recommended",
+    "perDuration": "/ {hours} hours",
+    "defaultCta": "Enquire for {code}",
+    "footnote": "Prices shown are for a 4-hour event. Additional hours, outstation travel and custom requirements can be discussed."
+  },
+
+  "booking": {
+    "eyebrow": "How booking works",
+    "title": "Booking PAL is easy",
+    "steps": [
+      "Tell us about your event",
+      "We discuss your requirements",
+      "Confirm your package and booking",
+      "PAL arrives and makes your event memorable"
+    ],
+    "cta": "Let's plan your PAL experience"
+  },
+
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions? We've got answers."
+  },
+
+  "contact": {
+    "eyebrow": "Contact",
+    "titleBefore": "Let's make your event a little more",
+    "titleHighlight": "memorable.",
+    "sub": "Share a few details and we'll get back to you with availability and a quote.",
+    "whatsappButton": "Chat on WhatsApp",
+    "success": {
+      "title": "Thanks, {name}! You're on our list.",
+      "messageBeforeRef": "We've received your inquiry (ref ",
+      "messageAfterRef": ") and will reach out shortly. Want a faster reply? Continue on WhatsApp — your details are already filled in.",
+      "whatsappButton": "Continue on WhatsApp",
+      "anotherButton": "Send another inquiry"
+    },
+    "form": {
+      "fullName": { "label": "Full name *", "placeholder": "Your name" },
+      "phone": { "label": "Phone number *", "placeholder": "98765 43210" },
+      "eventType": { "label": "Event type *", "placeholder": "Select…" },
+      "package": { "label": "Preferred package" },
+      "eventDate": { "label": "Event date" },
+      "startTime": { "label": "Start time" },
+      "duration": { "label": "Duration (hours)" },
+      "guests": { "label": "Approx. guests", "placeholder": "e.g. 250" },
+      "location": { "label": "Event location", "placeholder": "Venue / area, city" },
+      "notes": { "label": "Additional details", "optional": "(optional)", "placeholder": "Theme, special requests, anything we should know…" },
+      "submit": "Send inquiry",
+      "sending": "Sending…",
+      "savedNote": "Your inquiry is saved instantly — no need to wait on WhatsApp.",
+      "sendError": "Could not send. Please try again or WhatsApp us."
+    },
+    "whatsappMessage": {
+      "intro": "Hi PAL! I'd like to enquire about a photobooth.",
+      "introWithRef": "Hi PAL! I'd like to enquire about a photobooth (Ref {ref}).",
+      "name": "Name: {value}",
+      "phone": "Phone: {value}",
+      "event": "Event: {value}",
+      "date": "Date: {value}",
+      "dateWithTime": "Date: {value} at {time}",
+      "duration": "Duration: {value} hours",
+      "location": "Location: {value}",
+      "guests": "Guests: ~{value}",
+      "package": "Package: {value}",
+      "notes": "Notes: {value}"
+    }
+  },
+
+  "footer": {
+    "exploreTitle": "Explore",
+    "faqLink": "FAQ",
+    "contactTitle": "Say hello",
+    "instagramAriaLabel": "PAL on Instagram",
+    "whatsappAriaLabel": "Chat with PAL on WhatsApp",
+    "emailAriaLabel": "Email PAL",
+    "navAriaLabel": "Footer",
+    "copyright": "© {year} {brand}. {footerText}"
+  },
+
+  "floatingWhatsApp": {
+    "ariaLabel": "Chat on WhatsApp"
+  },
+
+  "settings": {
+    "brand_name": "{brand}",
+    "tagline": "Photobooth experiences that people take home.",
+    "hero_title": "Your moments. Your PAL. Your memories.",
+    "hero_subtitle": "Make every celebration a little more memorable. Capture the fun, print the moments and take the memories home.",
+    "hero_image": "",
+    "about_text": "{brand} brings fun, instant-print photobooth experiences to weddings, sangeets, corporate events, college fests, Navratri and every celebration in between.",
+    "whatsapp_number": "",
+    "phone": "",
+    "email": "",
+    "instagram_handle": "palclickit",
+    "instagram_url": "https://www.instagram.com/palclickit",
+    "city": "Vadodara, Gujarat",
+    "service_area": "Based in Vadodara, Gujarat. We travel across Gujarat and beyond — travel charges may apply for outstation events.",
+    "whatsapp_greeting": "Hi PAL! I would like to know more about booking a photobooth.",
+    "show_samples": "true",
+    "events_cta_text": "Planning something? Let's make it memorable.",
+    "seo_title": "{brand} | Photobooth for Weddings & Events in Vadodara",
+    "seo_description": "Instant-print photobooth for weddings, sangeets, corporate events, college fests and parties in Vadodara, Gujarat.",
+    "footer_text": "Made with love in Vadodara."
+  },
+
+  "packages_data": [
+    {
+      "code": "MINI",
+      "name": "PAL MINI",
+      "price": 15000,
+      "tagline": "Everything you need for a fun event",
+      "highlighted": false,
+      "cta_label": "Enquire for MINI",
+      "features": [
+        "Unlimited photo prints",
+        "Standard photo strip layout",
+        "PAL and custom event branding on prints",
+        "On-site booth attendant",
+        "Digital gallery of photos"
+      ]
+    },
+    {
+      "code": "PLUS",
+      "name": "PAL PLUS",
+      "price": 22000,
+      "tagline": "Most popular for weddings & parties",
+      "highlighted": true,
+      "cta_label": "Enquire for PLUS",
+      "features": [
+        "Unlimited photo prints",
+        "Multiple photo layouts",
+        "Customized photo design and branding",
+        "On-site booth attendant",
+        "Premium props",
+        "Digital gallery of photos"
+      ]
+    },
+    {
+      "code": "PREMIUM",
+      "name": "PAL PREMIUM",
+      "price": 25000,
+      "tagline": "The complete, elevated experience",
+      "highlighted": false,
+      "cta_label": "Enquire for PREMIUM",
+      "features": [
+        "Unlimited photo prints",
+        "Multiple premium photo layouts",
+        "Premium customized photo design and branding",
+        "On-site booth attendant",
+        "Premium props",
+        "Digital gallery of photos",
+        "Enhanced premium experience"
+      ]
+    }
+  ],
+
+  "faqs_data": [
+    {
+      "question": "What events can PAL be booked for?",
+      "answer": "Weddings, sangeet, mehendi, birthdays, corporate events, college festivals, Navratri and festive events, private parties and brand activations. If you are planning something different, just ask."
+    },
+    {
+      "question": "How long does the photobooth service last?",
+      "answer": "Our standard packages are for 4 hours of photobooth service. Setup happens before your event start time."
+    },
+    {
+      "question": "Are the prints unlimited?",
+      "answer": "Yes — all three packages include unlimited photo prints during the booked duration."
+    },
+    {
+      "question": "Can the photo strips be customized?",
+      "answer": "Absolutely. Every package includes PAL and event branding on the prints. PLUS and PREMIUM include customized layouts and photo designs made for your event."
+    },
+    {
+      "question": "Do you provide props?",
+      "answer": "PLUS and PREMIUM packages include premium props. Tell us your theme and we will help you plan the fun."
+    },
+    {
+      "question": "Is an attendant available?",
+      "answer": "Yes. An on-site PAL attendant is included in every package to run the booth and help your guests."
+    },
+    {
+      "question": "How far does PAL travel?",
+      "answer": "We are based in Vadodara and cover events across Gujarat. For outstation events, travel charges may apply — share your location and we will confirm."
+    },
+    {
+      "question": "How do I book?",
+      "answer": "Send us an inquiry using the form on this page or message us on WhatsApp. We will discuss your requirements, confirm your package and lock your date with an advance."
+    },
+    {
+      "question": "Can I book PAL for more than four hours?",
+      "answer": "Yes. Additional hours and custom requirements can be discussed — get in touch and we will put together a quote."
+    }
+  ],
+
+  "eventCards_data": [
+    { "title": "Weddings", "description": "Let guests take home a keepsake from your big day.", "image": "/imgs/wedding.png" },
+    { "title": "Sangeet & Mehendi", "description": "Colour, music and candid chaos — captured and printed.", "image": "/imgs/mehndi.png" },
+    { "title": "Birthday Parties", "description": "Props, poses and prints that make the party unforgettable.", "image": "/imgs/party.png" },
+    { "title": "Corporate Events", "description": "Branded prints that your team and clients actually keep.", "image": "/imgs/corporate.png" },
+    { "title": "College Festivals", "description": "High-energy booths built for big crowds.", "image": "/imgs/college.png" },
+    { "title": "Navratri & Festive Events", "description": "Garba nights deserve a picture-perfect memory.", "image": "/imgs/garba.png" }
+  ],
+
+  "gallerySamples_data": {
+    "artCaption": "{label} · sample artwork",
+    "items": [
+      { "category": "Weddings", "label": "Wedding reception" },
+      { "category": "Festivals", "label": "Navratri night" },
+      { "category": "Parties", "label": "Birthday bash" },
+      { "category": "Corporate", "label": "Brand activation" },
+      { "category": "Weddings", "label": "Sangeet fun" },
+      { "category": "Parties", "label": "Private party" },
+      { "category": "Festivals", "label": "Garba evening" },
+      { "category": "Corporate", "label": "Office celebration" },
+      { "category": "Weddings", "label": "Mehendi moments" }
+    ]
+  }
+}
