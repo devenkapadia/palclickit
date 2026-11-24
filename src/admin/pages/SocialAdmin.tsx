@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowDown, ArrowUp, ExternalLink, Eye, EyeOff, Pencil, Plus, Trash2, Upload } from 'lucide-react';
 import { api } from '@/lib/api';
-import { Badge, Button, Card, Empty, ErrorBox, Field, Input, Modal, PageHeader, Spinner, useUi } from '@/components/ui';
+import { Badge, Button, Card, Empty, ErrorBox, Field, Input, Modal, PageHeader, Spinner, TempStorageNote, useUi } from '@/components/ui';
 import { useAction } from '../hooks';
 import { type Row } from '../ctx';
 
@@ -61,7 +61,8 @@ export default function SocialAdmin() {
             <Button type="button" loading={busy} onClick={() => fileRef.current?.click()}><Upload className="size-4" /> Upload video</Button>
           </div>
         </div>
-        <p className="mb-4 text-xs text-slate-500">MP4, WebM or MOV · up to 150 MB · vertical (9:16) videos look best.</p>
+        <p className="mb-2 text-xs text-slate-500">MP4, WebM or MOV · up to 150 MB · vertical (9:16) videos look best.</p>
+        <TempStorageNote className="mb-4" />
         <div className="mb-2 border-t border-slate-100 pt-4 text-sm font-bold">Or link an Instagram reel/post <span className="font-normal text-slate-500">— Instagram adds its own header and footer</span></div>
         <form onSubmit={add} className="grid items-end gap-3 sm:grid-cols-[2fr_1fr_auto]">
           <Field label="Instagram link" required hint="Open the reel/post on Instagram → ⋯ → Copy link">

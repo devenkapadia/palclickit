@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowDown, ArrowUp, Eye, EyeOff, Pencil, Plus, Trash2, Upload } from 'lucide-react';
 import { api } from '@/lib/api';
 import { inr } from '@/lib/format';
-import { Badge, Button, Card, CardHeader, Empty, ErrorBox, Field, Input, Modal, PageHeader, Spinner, Tabs, Textarea, Toggle, useUi } from '@/components/ui';
+import { Badge, Button, Card, CardHeader, Empty, ErrorBox, Field, Input, Modal, PageHeader, Spinner, Tabs, TempStorageNote, Textarea, Toggle, useUi } from '@/components/ui';
 import { useAction } from '../hooks';
 import { type Row } from '../ctx';
 
@@ -93,6 +93,7 @@ function SettingsForm({ title, intro, fields, image }: { title: string; intro?: 
                 {v.hero_image && <Button size="sm" variant="ghost" onClick={() => setV({ ...v, hero_image: '' })}>Use default artwork</Button>}
               </div>
             </div>
+            <TempStorageNote className="mt-2" />
           </div>
         )}
       </div>
@@ -266,6 +267,7 @@ function EventCards() {
               <Button size="sm" variant="outline" onClick={() => fileRef.current?.click()}><Upload className="size-4" /> Upload</Button>
               {f.image_url && <Button size="sm" variant="ghost" onClick={() => setF({ ...f, image_url: '' })}>Remove</Button>}
             </div>
+            <TempStorageNote className="mt-2" />
           </div>
         </div>
       </Modal>

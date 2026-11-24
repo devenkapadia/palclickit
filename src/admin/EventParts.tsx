@@ -4,7 +4,7 @@ import { Check, CreditCard, Download, ExternalLink, Pencil, Plus, Receipt, Trash
 import { api } from '@/lib/api';
 import { fmtDate, fmtTime, inr, telLink, todayStr, waLink } from '@/lib/format';
 import { BOOKING_STATUSES, EVENT_TYPES, EXPENSE_CATEGORIES, PACKAGE_CODES, PAYMENT_METHODS, PAYMENT_TYPES } from '@shared/constants';
-import { Badge, Button, Drawer, Field, Input, Modal, Select, Spinner, Textarea, useUi } from '@/components/ui';
+import { Badge, Button, Drawer, Field, Input, Modal, Select, Spinner, TempStorageNote, Textarea, useUi } from '@/components/ui';
 import { useAction, num } from './hooks';
 import { useAdmin, type Row } from './ctx';
 
@@ -273,6 +273,7 @@ export function ExpenseModal({ open, onClose, expense, preset }: { open: boolean
         {!quickMode && <Field label="Notes" className="sm:col-span-2"><Textarea value={f.notes ?? ''} onChange={set('notes')} rows={2} /></Field>}
         {!quickMode && <Field label="Receipt (image or PDF, max 8MB)" className="sm:col-span-2">
           <input type="file" accept="image/jpeg,image/png,image/webp,application/pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-soft file:px-3 file:py-2 file:font-semibold file:text-navy" />
+          <TempStorageNote className="mt-2" />
           {editing && expense!.receipt_file && !file && (
             <span className="mt-1 flex items-center gap-3 text-xs">
               <a className="font-semibold text-navy underline" href={`/api/admin/expenses/${expense!.id}/receipt`} target="_blank" rel="noopener noreferrer">View current receipt</a>

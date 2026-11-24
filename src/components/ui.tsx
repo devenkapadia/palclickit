@@ -224,6 +224,16 @@ export function Tabs<T extends string>({ value, onChange, options }: { value: T;
   );
 }
 
+/** Warning for features that save files to the server disk, which is wiped on restart on free hosting (e.g. Render free). */
+export function TempStorageNote({ className }: { className?: string }) {
+  return (
+    <p className={clsx('flex items-start gap-1.5 rounded-lg bg-warn/15 px-3 py-2 text-xs font-semibold text-navy', className)}>
+      <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
+      <span>Temporary storage: files uploaded here are deleted when the server restarts or redeploys. Re-upload them afterwards, or use an Instagram link instead where possible.</span>
+    </p>
+  );
+}
+
 export function PageHeader({ title, sub, actions }: { title: string; sub?: ReactNode; actions?: ReactNode }) {
   return (
     <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
