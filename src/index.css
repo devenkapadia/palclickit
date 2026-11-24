@@ -1,0 +1,68 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/dm-sans';
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Bricolage Grotesque Variable', 'DM Sans Variable', system-ui, sans-serif;
+  --font-sans: 'DM Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* PAL brand */
+  --color-sky: #a4d7eb;
+  --color-ink: #171717;
+  --color-sun: #ffde59;
+
+  /* Complementary */
+  --color-soft: #eaf6fc;
+  --color-navy: #153b50;
+  --color-cream: #fff9e8;
+  --color-mist: #f4f4f4;
+  --color-good: #3b8c69;
+  --color-warn: #f2a65a;
+  --color-bad: #e76f51;
+
+  --shadow-pop: 6px 6px 0 0 #ffde59;
+  --shadow-pop-sm: 4px 4px 0 0 #ffde59;
+  --shadow-pop-ink: 6px 6px 0 0 #171717;
+  --shadow-card: 0 1px 2px rgb(23 23 23 / 0.06), 0 8px 24px -12px rgb(23 23 23 / 0.15);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite reverse;
+  --animate-wiggle: wiggle 4s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 2deg)); }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-6deg); }
+    50% { transform: rotate(6deg); }
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  ::selection { background: var(--color-sun); color: var(--color-ink); }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
+}
+
+/* Scroll-reveal */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+  .animate-float, .animate-float-slow, .animate-wiggle { animation: none !important; }
+}
+
+/* Admin niceties */
+.scroll-thin::-webkit-scrollbar { height: 8px; width: 8px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
