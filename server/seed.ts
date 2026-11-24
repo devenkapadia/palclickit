@@ -65,12 +65,16 @@ export async function seed() {
   if (!(await exists('gallery_categories', {}))) {
     for (const [i, c] of DEFAULT_GALLERY_CATEGORIES.entries()) await insert('gallery_categories', { name: c, sort_order: i });
   }
-  if (!(await exists('gallery_images', {}))) {
+  {
     const items = content.gallerySamples_data.items;
     const heights = [1000, 800, 900, 1000, 850, 1000, 800, 920, 1000];
+    const isEmpty = !(await exists('gallery_images', {}));
     for (const [i, { category: cat, label }] of items.entries()) {
       const file = `sample-${i + 1}.svg`;
-      fs.writeFileSync(path.join(dirs.gallery, file), sampleArt(i + 1, label, PALETTES[i % PALETTES.length], 800, heights[i]));
+      const target = path.join(dirs.gallery, file);
+      // Regenerate on every start if missing, so hosts with an ephemeral disk (e.g. Render free) never show broken samples.
+      if (!fs.existsSync(target)) fs.writeFileSync(target, sampleArt(i + 1, label, PALETTES[i % PALETTES.length], 800, heights[i]));
+      if (!isEmpty) continue;
       await insert('gallery_images', {
         title: label, category: cat, url: `/uploads/gallery/${file}`, is_sample: true, visible: true, sort_order: i, created_at: nowIso(),
       });
