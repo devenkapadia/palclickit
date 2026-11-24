@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { insert, list, logActivity, nowIso, one } from '../db.ts';
 import { readSettings } from './content.ts';
 import { optDate, optInt, optNum, optStr, optTime, phoneStr, reqStr, today } from '../util.ts';
-import { EVENT_TYPES } from '../../shared/constants.ts';
+import { EVENT_TYPES, PENDING_STATUS } from '../../shared/constants.ts';
 
 export const publicRouter = Router();
 
@@ -62,7 +62,7 @@ publicRouter.post('/inquiry', async (req, res) => {
     customer_name: d.customer_name, phone: d.phone, whatsapp: d.phone, event_type: d.event_type,
     event_date: d.event_date ?? null, start_time: d.start_time ?? null, duration_hours: d.duration_hours ?? null,
     venue_name: d.venue_name ?? null, location: d.location ?? null, guest_count: d.guest_count ?? null, package_code: d.package_code,
-    quoted_price: pkg?.price ?? null, source: 'Website', inquiry_date: today(), status: 'New',
+    quoted_price: pkg?.price ?? null, source: 'Website', inquiry_date: today(), status: PENDING_STATUS,
     notes: d.notes ?? null, created_at: now, updated_at: now,
   });
   await logActivity('inquiry', `New website inquiry from ${d.customer_name}`, 'inquiry', id);

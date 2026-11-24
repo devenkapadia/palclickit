@@ -43,5 +43,8 @@ export const LOG_KINDS = ['note', 'call', 'whatsapp', 'meeting'] as const;
 
 export const DEFAULT_GALLERY_CATEGORIES = ['Weddings', 'Festivals', 'Corporate', 'Parties'] as const;
 
+/** Website form submissions wait here until an admin approves them (never shown as a normal inquiry status). */
+export const PENDING_STATUS = 'Pending approval';
+
 /** Statuses that are still "open" in the sales pipeline. */
 export const OPEN_STATUSES: readonly string[] = ['New'];

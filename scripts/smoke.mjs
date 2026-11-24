@@ -42,10 +42,28 @@ check('honeypot blocks bots', r.status === 400);
 r = await call('POST', '/api/public/inquiry', { customer_name: '', phone: '1', event_type: 'Wedding' }, { auth: false });
 check('public validation', r.status === 400);
 
+// --- website requests (held for approval) ---
+r = await call('GET', '/api/admin/inquiries');
+check('website request not listed as inquiry', r.json.length === 0, JSON.stringify(r.json));
+r = await call('GET', '/api/admin/inquiries/pending');
+check('website request is pending', r.json.length === 1 && r.json[0].source === 'Website' && r.json[0].quoted_price === 22000, JSON.stringify(r.json[0]));
+const inqId = r.json[0].id;
+r = await call('POST', `/api/admin/inquiries/${inqId}/convert`, { final_amount: 1 });
+check('pending request cannot be converted', r.status === 409);
+r = await call('POST', '/api/public/inquiry', { customer_name: 'Test Spam', phone: '9825099999', event_type: 'Other' }, { auth: false });
+r = await call('GET', '/api/admin/inquiries/pending');
+const spam = r.json.find((x) => x.customer_name === 'Test Spam');
+check('second request pending', r.json.length === 2 && !!spam);
+r = await call('DELETE', `/api/admin/inquiries/${spam.id}/reject`);
+check('request discarded', r.status === 200);
+r = await call('POST', `/api/admin/inquiries/${inqId}/approve`);
+check('request approved', r.status === 200 && r.json.status === 'New', JSON.stringify(r.json));
+r = await call('GET', '/api/admin/inquiries/pending');
+check('nothing left pending', r.json.length === 0);
+
 // --- inquiries ---
 r = await call('GET', '/api/admin/inquiries');
-check('website inquiry visible in CRM', r.json.length === 1 && r.json[0].source === 'Website' && r.json[0].quoted_price === 22000, JSON.stringify(r.json[0]));
-const inqId = r.json[0].id;
+check('approved request visible in CRM', r.json.length === 1 && r.json[0].id === inqId, JSON.stringify(r.json[0]));
 r = await call('POST', '/api/admin/inquiries', { customer_name: 'Amit Patel', phone: '9876543210', event_type: 'Corporate', event_date: '2026-11-05', package_code: 'MINI', quoted_price: 15000, source: 'Phone Call' });
 check('manual inquiry created', r.status === 201);
 const inq2 = r.json.id;

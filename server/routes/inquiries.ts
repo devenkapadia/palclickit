@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { byId, col, exists, insert, list, logActivity, nowIso, patch, one } from '../db.ts';
 import { enrichInquiries, getEvent } from '../domain.ts';
-import { EVENT_TYPES, INQUIRY_SOURCES, INQUIRY_STATUSES, LOG_KINDS, PACKAGE_CODES } from '../../shared/constants.ts';
+import { EVENT_TYPES, INQUIRY_SOURCES, INQUIRY_STATUSES, LOG_KINDS, PACKAGE_CODES, PENDING_STATUS } from '../../shared/constants.ts';
 import {
   HttpError, addHoursToTime, compareBy, idParam, optDate, optInt, optNum, optStr, optTime, phoneStr, pick, reqStr, searchFilter, today,
 } from '../util.ts';
@@ -59,7 +59,9 @@ inquiriesRouter.get('/', async (req, res) => {
   if (q.open === '1') f.status = 'New';
   // Completed inquiries (event done) are history: hidden unless the Completed status is explicitly filtered
   // or the caller (pipeline view) asks for them with include_completed=1.
-  else if (!q.status && q.include_completed !== '1') f.status = { $ne: 'Completed' };
+  // Website requests still awaiting approval are never listed here — they live in /pending.
+  else if (!q.status) f.status = { $nin: q.include_completed === '1' ? [PENDING_STATUS] : ['Completed', PENDING_STATUS] };
+  else if (q.status === PENDING_STATUS) f.status = { $nin: [PENDING_STATUS] };
   if (and.length) f.$and = and;
 
   let rows = await enrichInquiries(await list('inquiries', f));
@@ -67,6 +69,32 @@ inquiriesRouter.get('/', async (req, res) => {
   const keyFn = SORT_KEYS[q.sort ?? ''] ?? SORT_KEYS.created_at;
   rows.sort(compareBy(keyFn, q.dir === 'asc' ? 'asc' : 'desc'));
   res.json(rows);
+});
+
+// ---- website requests awaiting approval ---------------------------------------
+inquiriesRouter.get('/pending', async (_req, res) => {
+  res.json(await list('inquiries', { status: PENDING_STATUS }, { created_at: -1 }));
+});
+
+inquiriesRouter.post('/:id/approve', async (req, res) => {
+  const id = idParam(req.params.id);
+  const inq = await byId('inquiries', id);
+  if (!inq || inq.status !== PENDING_STATUS) throw new HttpError(404, 'No pending request found');
+  const now = nowIso();
+  await patch('inquiries', id, { status: 'New', updated_at: now });
+  await insert('inquiry_logs', { inquiry_id: id, kind: 'system', body: 'Website request approved', created_at: now });
+  await logActivity('inquiry', `Website request approved: ${inq.customer_name}`, 'inquiry', id);
+  res.json((await enrichInquiries([(await byId('inquiries', id))!]))[0]);
+});
+
+// Rejecting discards the request (spam / test / accidental) — nothing else references it yet.
+inquiriesRouter.delete('/:id/reject', async (req, res) => {
+  const id = idParam(req.params.id);
+  const inq = await byId('inquiries', id);
+  if (!inq || inq.status !== PENDING_STATUS) throw new HttpError(404, 'No pending request found');
+  await col('inquiries').deleteOne({ _id: id as any });
+  await logActivity('inquiry', `Website request discarded: ${inq.customer_name}`);
+  res.json({ ok: true });
 });
 
 inquiriesRouter.post('/', async (req, res) => {
@@ -159,6 +187,7 @@ inquiriesRouter.post('/:id/convert', async (req, res) => {
   const id = idParam(req.params.id);
   const inq = await byId('inquiries', id);
   if (!inq) throw new HttpError(404, 'Inquiry not found');
+  if (inq.status === PENDING_STATUS) throw new HttpError(409, 'Approve this website request before converting it');
   if (await exists('events', { inquiry_id: id })) throw new HttpError(409, 'This inquiry is already converted to a booking');
   const d = convertSchema.parse(req.body);
 

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  CalendarDays, ClipboardList, FileDown, Globe, Image, LayoutDashboard, LogOut, Menu, PartyPopper,
+  Bell, CalendarDays, ClipboardList, FileDown, Globe, Image, LayoutDashboard, LogOut, Menu, PartyPopper,
   Plus, Receipt, Settings as SettingsIcon, Users, Wallet, X,
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -15,6 +15,7 @@ import { InquiryDrawer, InquiryFormModal } from './InquiryParts';
 import { EventDrawer, EventFormModal, ExpenseModal } from './EventParts';
 import Dashboard from './pages/Dashboard';
 import Inquiries from './pages/Inquiries';
+import WebsiteRequests from './pages/WebsiteRequests';
 import Followups from './pages/Followups';
 import Bookings from './pages/Bookings';
 import CalendarPage from './pages/CalendarPage';
@@ -27,6 +28,7 @@ import SettingsPage from './pages/SettingsPage';
 
 const NAV = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/admin/requests', label: 'Website requests', icon: Bell },
   { to: '/admin/inquiries', label: 'Inquiries', icon: Users },
   { to: '/admin/followups', label: 'Follow-ups', icon: ClipboardList },
   { to: '/admin/bookings', label: 'Bookings / Events', icon: PartyPopper },
@@ -65,6 +67,9 @@ function Shell({ user }: { user: AdminCtx['user'] }) {
   // Sidebar badge: follow-ups that need attention now (overdue + today). Shares its cache key with the Follow-ups page.
   const fu = useQuery({ queryKey: ['followups'], queryFn: () => api.get<Record<'today' | 'overdue', Row[]>>('/admin/followups') });
   const followupsDue = (fu.data?.overdue.length ?? 0) + (fu.data?.today.length ?? 0);
+  // Sidebar badge: website requests waiting for approval (re-checked every 30s so new ones show up like a notification).
+  const pendingReq = useQuery({ queryKey: ['pending-requests'], queryFn: () => api.get<Row[]>('/admin/inquiries/pending'), refetchInterval: 30_000 });
+  const requestsWaiting = pendingReq.data?.length ?? 0;
 
   const logout = useCallback(async () => {
     try { await api.post('/auth/logout'); } catch { /* session may already be gone */ }
@@ -101,6 +106,9 @@ function Shell({ user }: { user: AdminCtx['user'] }) {
               <n.icon className="size-[18px]" /> {n.label}
               {n.to === '/admin/followups' && followupsDue > 0 && (
                 <span className="ml-auto rounded-full bg-sun px-2 text-xs font-bold text-ink" aria-label={`${followupsDue} follow-ups due`}>{followupsDue}</span>
+              )}
+              {n.to === '/admin/requests' && requestsWaiting > 0 && (
+                <span className="ml-auto rounded-full bg-sun px-2 text-xs font-bold text-ink" aria-label={`${requestsWaiting} website requests waiting`}>{requestsWaiting}</span>
               )}
             </NavLink>
           </li>
@@ -142,6 +150,7 @@ function Shell({ user }: { user: AdminCtx['user'] }) {
           <div className="mx-auto max-w-[1400px] p-4 sm:p-6">
             <Routes>
               <Route index element={<Dashboard />} />
+              <Route path="requests" element={<WebsiteRequests />} />
               <Route path="inquiries" element={<Inquiries />} />
               <Route path="followups" element={<Followups />} />
               <Route path="bookings" element={<Bookings />} />

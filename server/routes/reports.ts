@@ -3,6 +3,7 @@ import { list } from '../db.ts';
 import { listEvents } from '../domain.ts';
 import { computeFinance } from '../finance.ts';
 import { HttpError } from '../util.ts';
+import { PENDING_STATUS } from '../../shared/constants.ts';
 
 export const reportsRouter = Router();
 
@@ -37,7 +38,7 @@ const REPORTS: Record<string, Report> = {
     columns: [['id', 'ID'], ['customer_name', 'Customer'], ['phone', 'Phone'], ['whatsapp', 'WhatsApp'], ['event_type', 'Event Type'],
       ['event_date', 'Event Date'], ['location', 'Location'], ['guest_count', 'Guests'], ['package_code', 'Package'],
       ['quoted_price', 'Quoted Price'], ['source', 'Source'], ['inquiry_date', 'Inquiry Date'], ['status', 'Status'], ['notes', 'Notes']],
-    rows: async (f, t) => (await list('inquiries', {}, { inquiry_date: -1 })).filter(between('inquiry_date', f, t)),
+    rows: async (f, t) => (await list('inquiries', { status: { $ne: PENDING_STATUS } }, { inquiry_date: -1 })).filter(between('inquiry_date', f, t)),
   },
   bookings: {
     columns: bookingCols(),

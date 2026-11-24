@@ -3,20 +3,24 @@ import { list } from '../db.ts';
 import { listEvents } from '../domain.ts';
 import { computeFinance } from '../finance.ts';
 import { withInquiry } from './followups.ts';
-import { INQUIRY_STATUSES } from '../../shared/constants.ts';
+import { INQUIRY_STATUSES, PENDING_STATUS } from '../../shared/constants.ts';
 import { today } from '../util.ts';
 
 export const dashboardRouter = Router();
 
 dashboardRouter.get('/', async (_req, res) => {
   const t = today();
-  const [inquiries, pendingAll, events, fin, recent] = await Promise.all([
+  const [allInquiries, pendingAll, events, fin, recent] = await Promise.all([
     list<{ status: string; inquiry_date: string }>('inquiries'),
     list('followups', { status: 'Pending', due_date: { $lte: t } }),
     listEvents(),
     computeFinance(),
     list('activity_log', {}, { _id: -1 }, 15),
   ]);
+  // Website requests awaiting approval aren't inquiries yet — they're reported separately.
+  const inquiries = allInquiries.filter((i) => i.status !== PENDING_STATUS);
+  const awaitingApproval = allInquiries.length - inquiries.length;
+
   const byStatus = Object.fromEntries(INQUIRY_STATUSES.map((s) => [s, inquiries.filter((i) => i.status === s).length]));
 
   const key = (f: any) => `${f.due_date} ${f.due_time ?? '99:99'}`;
@@ -31,6 +35,7 @@ dashboardRouter.get('/', async (_req, res) => {
 
   res.json({
     metrics: {
+      awaiting_approval: awaitingApproval,
       total_inquiries: inquiries.length - byStatus['Completed'],
       new_inquiries: byStatus['New'],
       new_this_week: inquiries.filter((i) => i.inquiry_date >= weekAgo && i.status !== 'Completed').length,
